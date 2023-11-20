@@ -1,0 +1,49 @@
+services:
+  proxy:
+    build:
+      context: nginx
+      dockerfile: ./Dockerfile.prod
+    container_name: nginx
+    ports:
+      - "8080:8080"
+    networks:
+      - network-desafio
+    depends_on:
+      - app
+
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    environment:
+      - MYSQL_DATABASE=desafiodb
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - network-desafio
+
+
+  app:
+    build:
+      context: nodejs
+      dockerfile: ./Dockerfile.prod
+    container_name: app
+    # entrypoint: dockerize -wait tcp://db:3306 -timeout 20s
+    volumes:
+      - ./nodejs:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - network-desafio
+    depends_on:
+      - db
+
+
+
+networks:
+  network-desafio:
+    driver: bridge
+    
