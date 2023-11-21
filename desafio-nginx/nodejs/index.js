@@ -15,9 +15,7 @@ connection.end()
 
 
 app.get('/', (req, res) => {
-    // res.send('<h1>Full Cycle Rocks!</h1>')
     const connection = mysql.createConnection(config)
-    // const resultado = connection.query(`SELECT * FROM pessoa`)
     var resultado = '<h1>Full Cycle Rocks!</h1>'
 
     connection.query(`SELECT * FROM pessoa`, function(err, rows) {
@@ -30,11 +28,6 @@ app.get('/', (req, res) => {
     })
 
     connection.end()
-
-    // console.log(resultado)
-
-    // var busca = JSON.parse(JSON.stringify(resultado[0]));
-    // res.send(busca)
 })
 
 app.listen(port, () => {
