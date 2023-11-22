@@ -2,6 +2,10 @@ FROM node:15
 
 WORKDIR /usr/src/app
 
+RUN npm install express --save
+
+RUN npm install mysql --save
+
 ENV DOCKERIZE_VERSION v0.7.0
 
 RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
@@ -12,5 +16,3 @@ COPY . .
 EXPOSE 3000
 
 CMD dockerize -wait tcp://db:3306 -timeout 60s node index.js
-
-# CMD ["node", "index.js"]
